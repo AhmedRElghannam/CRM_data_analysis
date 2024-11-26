@@ -41,7 +41,7 @@ SELECT
     (SUM(compain_tag IS NULL) * 100.0 / COUNT(*)) AS "Campaign null %",
     SUM(CASE WHEN deal_stage_id = 1 THEN close_value ELSE 0 END) AS "Total close value"
 FROM opportunities;
-
+```sql
 
 Comments:
 Total Rows: 8799.
