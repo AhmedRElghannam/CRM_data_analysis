@@ -18,6 +18,7 @@ Understand the basic structure of the data and determine the proportion of missi
 
 #### Query:
 
+```sql
 SHOW TABLES;
 DESCRIBE opportunities;
 
@@ -58,7 +59,7 @@ Null close_date means the lead is still under processing or negotiation.
 ### 2. Account Table
 #### Query:
 
-
+```sql
 DESCRIBE account;
 
 SELECT 
@@ -84,7 +85,7 @@ Null subsidiary_id signifies that the account is sovereign and not linked as a s
 ### 3. Employee Table
 #### Query:
 
-
+```sql
 DESCRIBE employee;
 
 SELECT 
@@ -105,6 +106,8 @@ mgr_id is relational within the table and indicates reporting structure. For exa
 
 ### 4. Product Table
 #### Query:
+
+```sql
 DESCRIBE product;
 
 SELECT 
