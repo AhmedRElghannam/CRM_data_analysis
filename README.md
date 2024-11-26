@@ -1,3 +1,4 @@
+
 # Operation Data Analysis Project
 
 ## Data Sources
@@ -7,6 +8,7 @@
 ---
 
 ## Step 1: Explore the Data 
+
 ### Objective
 Understand the basic structure of the data and determine the proportion of missing values.
 
@@ -17,7 +19,6 @@ Understand the basic structure of the data and determine the proportion of missi
 ### **1. Opportunities Table**
 
 #### Query:
-
 ```sql
 SHOW TABLES;
 DESCRIBE opportunities;
@@ -42,23 +43,25 @@ SELECT
     (SUM(compain_tag IS NULL) * 100.0 / COUNT(*)) AS "Campaign null %",
     SUM(CASE WHEN deal_stage_id = 1 THEN close_value ELSE 0 END) AS "Total close value"
 FROM opportunities;
+```
 
+#### Comments:
+- **Total Rows**: 8799.
+- **Key Insights**:
+  - `account_id`: 16.20% null values.
+  - `engage_date`: 5.68% null values.
+  - `close_date` & `close_value`: 23.74% null values.
 
-Comments:
-Total Rows: 8799.
-Key Insights:
-account_id: 16.20% null values.
-engage_date: 5.68% null values.
-close_date & close_value: 23.74% null values.
-Management Implications:
-Null account_id indicates no actions have been taken.
-Null engage_date implies a deal is assigned but not engaged yet.
-Null close_date means the lead is still under processing or negotiation.
+- **Management Implications**:
+  - Null `account_id` indicates no actions have been taken.
+  - Null `engage_date` implies a deal is assigned but not engaged yet.
+  - Null `close_date` means the lead is still under processing or negotiation.
 
+---
 
-### 2. Account Table
+### **2. Account Table**
+
 #### Query:
-
 ```sql
 DESCRIBE account;
 
@@ -72,19 +75,20 @@ SELECT
     SUM(subsidiary_id IS NULL OR subsidiary_id = '') AS "Subsidiary ID null",
     (SUM(subsidiary_id IS NULL OR subsidiary_id = '') * 100.0 / COUNT(*)) AS "Subsidiary null %"
 FROM account;
+```
 
+#### Comments:
+- **Total Rows**: 8799.
+- **Key Insights**:
+  - `subsidiary_id`: 82.35% null values.
+- **Management Implications**:
+  - Null `subsidiary_id` signifies that the account is sovereign and not linked as a sub-account.
 
-Comments:
-Total Rows: 8799.
-Key Insights:
-subsidiary_id: 82.35% null values.
-Management Implications:
-Null subsidiary_id signifies that the account is sovereign and not linked as a sub-account.
+---
 
+### **3. Employee Table**
 
-### 3. Employee Table
 #### Query:
-
 ```sql
 DESCRIBE employee;
 
@@ -95,18 +99,20 @@ SELECT
     SUM(regional_office_id IS NULL) AS "Regional Office null",
     SUM(status_id IS NULL) AS "Status null"
 FROM employee;
+```
 
-Comments:
-Total Rows: 41.
-Key Insights:
-All columns have complete data (no null values).
-Management Implications:
-mgr_id is relational within the table and indicates reporting structure. For example, a value of 1 implies direct reporting to the CCO.
+#### Comments:
+- **Total Rows**: 41.
+- **Key Insights**:
+  - All columns have complete data (no null values).
+- **Management Implications**:
+  - `mgr_id` indicates reporting structure. For example, a value of `1` implies direct reporting to the CCO.
 
+---
 
-### 4. Product Table
+### **4. Product Table**
+
 #### Query:
-
 ```sql
 DESCRIBE product;
 
@@ -116,18 +122,22 @@ SELECT
     SUM(series_id IS NULL) AS "Series ID null",
     SUM(price IS NULL) AS "Price null"
 FROM product;
-Comments:
-Total Rows: 7.
-Key Insights:
-No null values in this table.
-5. Auxiliary Tables
-Description:
-The following tables (sector, office_location, regional_office, deal_stage, series, emp_status) have two columns (id and name), with no null values.
+```
 
-Purpose:
-sector: Categorizes account industries.
-office_location: Tracks the country of account origin.
-regional_office: Tracks the regional association of employees.
-deal_stage: Monitors client interaction stages.
-series: Associates products with a specific series.
-emp_status: Indicates whether an employee is current or former.
+#### Comments:
+- **Total Rows**: 7.
+- **Key Insights**:
+  - No null values in this table.
+
+---
+
+### **5. Auxiliary Tables**
+
+#### Description:
+The following tables have two columns (`id` and `name`), with no null values:
+- **sector**: Categorizes account industries.
+- **office_location**: Tracks the country of account origin.
+- **regional_office**: Tracks the regional association of employees.
+- **deal_stage**: Monitors client interaction stages.
+- **series**: Associates products with a specific series.
+- **emp_status**: Indicates whether an employee is current or former.
