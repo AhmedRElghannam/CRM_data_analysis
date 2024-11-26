@@ -17,7 +17,7 @@ Understand the basic structure of the data and determine the proportion of missi
 ### **1. Opportunities Table**
 
 #### Query:
-```sql
+
 SHOW TABLES;
 DESCRIBE opportunities;
 
@@ -57,7 +57,7 @@ Null close_date means the lead is still under processing or negotiation.
 
 ### 2. Account Table
 #### Query:
-```sql
+
 
 DESCRIBE account;
 
@@ -79,8 +79,12 @@ Key Insights:
 subsidiary_id: 82.35% null values.
 Management Implications:
 Null subsidiary_id signifies that the account is sovereign and not linked as a sub-account.
-3. Employee Table
-Query:
+
+
+### 3. Employee Table
+#### Query:
+
+
 DESCRIBE employee;
 
 SELECT 
@@ -97,8 +101,10 @@ Key Insights:
 All columns have complete data (no null values).
 Management Implications:
 mgr_id is relational within the table and indicates reporting structure. For example, a value of 1 implies direct reporting to the CCO.
-4. Product Table
-Query:
+
+
+### 4. Product Table
+#### Query:
 DESCRIBE product;
 
 SELECT 
