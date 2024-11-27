@@ -141,3 +141,88 @@ The following tables have two columns (`id` and `name`), with no null values:
 - **deal_stage**: Monitors client interaction stages.
 - **series**: Associates products with a specific series.
 - **emp_status**: Indicates whether an employee is current or former.
+
+
+---
+
+## Step 2: Complex query to get need data for dashboard
+
+### Objective
+Extract all the data required to design a dashboard covering sales performance, geographic analysis, and KPIs.
+
+
+#### Query:
+```sql
+DESCRIBE product;
+
+SELECT 
+    opportunities.id AS "opportunities_id",
+    a.name AS "Sales_name",
+    CASE 
+    	WHEN a.mgr_id = 1 THEN "team leader"
+    	ELSE "agent"
+    END AS "employee_type",
+    product.name AS "proudect",
+    COALESCE(product.price,0) AS "proudect_price",
+    COALESCE(acc.name,"not assigned") AS "account",
+    CASE 
+    	WHEN COALESCE(acc.name, "not assigned") = "not assigned" THEN "not assigned account"
+        ELSE COALESCE(sup_acc.name, "main account")
+    END As sup_account,
+    deal_stage.name AS 'deal_stage',
+    opportunities.engage_date ,
+    opportunities.close_date,
+    CASE 
+        WHEN MONTH(close_date) BETWEEN 1 AND 3 THEN 'Q1'    
+        WHEN MONTH(close_date) BETWEEN 4 AND 6 THEN 'Q2'  
+        WHEN MONTH(close_date) BETWEEN 7 AND 9 THEN 'Q3'  
+        WHEN MONTH(close_date) BETWEEN 10 AND 12 THEN 'Q4'
+        WHEN engage_date IS NOT NULL THEN 'negotiation'
+        ELSE 'no action yet'
+    END AS quarter,
+   	(opportunities.close_date - opportunities.engage_date) AS "SLA",
+    COALESCE(opportunities.close_value,"0") AS "close_value",
+    COALESCE(office_location.name, "not assigned account") AS "office_location",
+    regional_office.name AS "regional_office",
+    sector.name AS "sector",
+    series.name AS 'series_name',
+    COALESCE(b.name, 'CCO') AS "manger"
+FROM 
+	opportunities
+LEFT JOIN  
+	product on opportunities.product_id = product.id 
+LEFT JOIN  
+	account acc on opportunities.account_id = acc.id 
+LEFT JOIN 
+	account sup_acc on acc.subsidiary_id  = sup_acc.id 
+LEFT JOIN  
+	employee a on opportunities.sales_agent_id = a.id 
+LEFT JOIN  
+	office_location on acc.office_location_id = office_location.id 
+LEFT JOIN  
+	regional_office on a.regional_office_id = regional_office.id
+LEFT JOIN  
+	deal_stage on opportunities.deal_stage_id = deal_stage.id
+LEFT JOIN  
+	sector on acc.sector_id = sector.id
+LEFT JOIN  
+	series on product.series_id = series.id
+LEFT JOIN
+	employee b ON a.mgr_id = b.id
+;
+
+
+---
+## **5. Dashboard Design Suggestions**
+
+### **Components**:
+1. **Sales Performance**:
+   - Analyze sales by employee and location.
+2. **Geographical Analysis**:
+   - Visualize deal distribution by region.
+3. **KPIs**:
+   - Track revenue and closed deals.
+4. **Pipeline Status**:
+   - Monitor client interaction stages.
+
+---
