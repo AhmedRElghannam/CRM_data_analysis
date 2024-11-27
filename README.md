@@ -145,8 +145,6 @@ The following tables have two columns (`id` and `name`), with no null values:
 
 ---
 
----
-
 ### **6. Complex Query for Dashboard**
 
 #### **Objective**
